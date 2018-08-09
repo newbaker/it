@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>添加页面~黑马程序员</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        tr {
+            line-height: 50px;
+        }
+
+        .jumbotron {
+            background-color: white;
+        }
+
+        span {
+            color: red;
+        }
+
+        .form-control {
+            display: inline;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="alert alert-info" role="alert">
+    <div class="container">
+        <h2>请输入添加商品资料</h2>
+    </div>
+</div>
+<div class="jumbotron">
+    <div class="container">
+        <form id="addProductForm" action="add" method="post" onsubmit=false>
+            <table align="center">
+                <colgroup>
+                    <col width="100px">
+                    <col width="500px;">
+                </colgroup>
+                <tr>
+                    <td>
+                        <label for="pname">商品名称</label>
+                    </td>
+                    <td>
+                        <input type="text" style="width: 300px;" class="form-control" name="pname" id="pname"
+                               placeholder="请求输入商品名称">
+                        <span id="pnameMsg"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="price">商品价格</label>
+                    </td>
+                    <td>
+                        <input type="text" style="width: 300px;" class="form-control" name="price" id="price"
+                               placeholder="请输入商品价格">
+                        <span id="priceMsg"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="category">分类名称</label>
+                    </td>
+                    <td>
+                        <input type="text" style="width: 300px;" class="form-control" id="category" name="category"
+                               placeholder="请输入商品分类名称">
+                        <span id="categoryMsg"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="desc">商品描述</label>
+                    </td>
+                    <td>
+                        <textarea rows="5" style="width: 300px;vertical-align:middle;" class="form-control" id="desc"
+                                  name="desc" placeholder="请输入商品描述"></textarea>
+                        <span id="descMsg"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" class="btn btn-primary btn-lg">添加商品</button>
+                        <span id="msg"></span>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+
+    </div>
+</div>
+<div class="alert alert-info" style="position: absolute;bottom: 0px;width: 100%;margin-bottom: 0px;" role="alert">
+    <div class="container">
+        北京传智播客教育科技有限公司 版权所有Copyright 2006-2018， All Rights Reserved 京ICP备08001421号 京公网安备110108007702
+    </div>
+</div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $("#pname").blur(function () {
+        var pname = $(this).val();
+        if (!pname) {
+            $("#pnameMsg").html("不能为空");
+        } else {
+            $("#pnameMsg").html("");
+        }
+    });
+    $("#price").blur(function () {
+        var price = $(this).val();
+        var aaa = /^[1-9]\d*(.\d+)?$/;
+        if (!price) {
+            $("#priceMsg").html("不能为空");
+        } else {
+            if (aaa.test(price)) {
+                $("#priceMsg").html("");
+            } else {
+                $("#priceMsg").html("价格大于0");
+            }
+        }
+    });
+    $("#category").blur(function () {
+        var category = $(this).val();
+        if (!category) {
+            $("#categoryMsg").html("不能为空");
+        } else {
+            $("#categoryMsg").html("");
+        }
+    });
+    $("#desc").blur(function () {
+        var desc = $(this).val();
+        if (!desc) {
+            $("#descMsg").html("不能为空");
+        } else {
+            $("#descMsg").html("");
+        }
+    })
+
+    $("#addProductForm").submit(function () {
+        var pname = $("#pname").val();
+        var price = $("#price").val();
+        var category = $("#category").val();
+        var desc = $("#desc").val();
+        var flag = true;
+
+        if (!pname) {
+            $("#pnameMsg").html("不能为空");
+            flag = false;
+        }
+        if (!price) {
+            $("#priceMsg").html("不能为空");
+            flag = false;
+        }
+        if (!category) {
+            $("#categoryMsg").html("不能为空");
+            flag = false;
+        }
+        if (!desc) {
+            $("#descMsg").html("不能为空");
+            flag = false;
+        }
+        return flag;
+    })
+</script>
+</body>
+</html>

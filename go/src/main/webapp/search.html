@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>查询页面~黑马程序员</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        tr {
+            line-height: 50px;
+        }
+
+        .jumbotron {
+            background-color: white;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--需要使用到此插件-->
+    <script type="text/javascript" src="js/getParameter.js"></script>
+</head>
+<body>
+
+<div class="alert alert-info" role="alert">
+    <div class="container">
+        <h2>根据查询条件搜索商品</h2>
+    </div>
+</div>
+<div class="jumbotron">
+    <div class="container">
+        <!--搜索条件-->
+        <form id="searchForm" class="form-inline">
+            <div class="form-group">
+                <label for="pname">商品名称</label>
+                <input type="text" class="form-control" id="pname" name="pname" placeholder="商品名称查询条件">
+            </div>
+            <div class="form-group">
+                <label for="minPrice">价格</label>
+                <input type="text" class="form-control" id="minPrice" name="minPrice" placeholder="最小金额">
+                ~<input type="text" class="form-control" id="maxPrice" name="maxPrice" placeholder="最大金额">
+            </div>
+            <div class="form-group">
+                <label for="category">分类名称</label>
+                <input type="text" class="form-control" id="category" name="category" placeholder="分类名称查询条件">
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="getAll()">&nbsp;&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;询&nbsp;&nbsp;</button>
+        </form>
+        <br/>
+        <!--数据表格-->
+        <table id="dataList" class="table table-bordered">
+            <tr class="danger">
+                <th>序号</th>
+                <th>商品名称</th>
+                <th>价格</th>
+                <th>分类名称</th>
+                <th>描述</th>
+            </tr>
+            <tr class="success">
+                <td>1</td>
+                <td>小米 1c 标准版</td>
+                <td>980</td>
+                <td>手机</td>
+                <td>小米 1c 标准版 全网通 白色 移动联通电信4G手机 双卡双待</td>
+            </tr>
+            <tr class="success">
+                <td>2</td>
+                <td>华为 P10 标准版</td>
+                <td>1980</td>
+                <td>手机</td>
+                <td>华为 P10 标准版 全网通 白色 移动联通电信4G手机 双卡双待</td>
+            </tr>
+            <tr class="success">
+                <td>3</td>
+                <td>联想(Lenovo)小新潮7000</td>
+                <td>5499</td>
+                <td>笔记本电脑</td>
+                <td>2018款14英寸轻薄窄边框笔记本电脑(I5-8250U 8G 2T+128G PCIE R535 2G)极光银</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="alert alert-info" style="position: absolute;bottom: 0px;width: 100%;margin-bottom: 0px;" role="alert">
+    <div class="container">
+        北京传智播客教育科技有限公司 版权所有Copyright 2006-2018， All Rights Reserved 京ICP备08001421号 京公网安备110108007702
+    </div>
+</div>
+
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    function getAll() {
+        var pname = $("#pname").val();
+        var minPrice = $("#minPrice").val();
+        var maxPrice = $("#maxPrice").val();
+        var category = $("#category").val();
+        sea(pname, minPrice, maxPrice, category);
+    }
+
+    $(function () {
+        var pname = getParameter("pname");
+        pname = pname ? pname : "";
+
+        var minPrice = getParameter("minPrice");
+        minPrice = minPrice ? minPrice : "";
+
+        var maxPrice = getParameter("maxPrice");
+        maxPrice = maxPrice ? maxPrice : "";
+
+        var category = getParameter("category");
+        category = category ? category : "";
+
+        sea(pname, minPrice, maxPrice, category);
+    })
+
+
+    function sea(pname, minPrice, maxPrice, category) {
+        pname = decodeURI(pname);
+        category = decodeURI(category);
+        $("#pname").val(pname);
+        $("#minPrice").val(minPrice);
+        $("#maxPrice").val(maxPrice);
+        $("#category").val(category);
+        $.post(
+            "search",
+            {action: "search", pname: pname, minPrice: minPrice, maxPrice: maxPrice, category: category},
+            function (result) {
+                var html = "<tr class=\"danger\">\n" +
+                    "            <th>序号</th>\n" +
+                    "            <th>商品名称</th>\n" +
+                    "            <th>价格</th>\n" +
+                    "            <th>分类名称</th>\n" +
+                    "            <th>描述</th>\n" +
+                    "        </tr>";
+                for (var pro of result) {
+                    html += "<tr class=\"success\">\n" +
+                        "            <td>" + pro.id + "</td>\n" +
+                        "            <td>" + pro.pname + "</td>\n" +
+                        "            <td>" + pro.price + "</td>\n" +
+                        "            <td>" + pro.category + "</td>\n" +
+                        "            <td>" + pro.desc + "</td>\n" +
+                        "        </tr>";
+                }
+                $("#dataList>tbody").html(html);
+            },
+            "json"
+        )
+    }
+</script>
+</body>
+</html>
